@@ -13,19 +13,27 @@ balance INTEGER NOT NULL
 )
 ''')
 
-for i in range(10):
-    cursor.execute('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)',
-                   (f'User{i + 1}', f'example{i + 1}gmail.com', f'{(i + 1) * 10}', '1000'))
-for n in range(1, 11, 2):
-    cursor.execute('UPDATE Users SET balance = ? WHERE username = ?', (500, f'User{n}'))
+#for i in range(10):
+#    cursor.execute('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)',
+#                   (f'User{i + 1}', f'example{i + 1}gmail.com', f'{(i + 1) * 10}', '1000'))
+#for n in range(1, 11, 2):
+#    cursor.execute('UPDATE Users SET balance = ? WHERE username = ?', (500, f'User{n}'))
 
-for k in range(1, 11, 3):
-    cursor.execute('DELETE FROM Users WHERE username = ?', (f'User{k}',))
+#for k in range(1, 11, 3):
+#    cursor.execute('DELETE FROM Users WHERE username = ?', (f'User{k}',))
 
-cursor.execute('SELECT username, email, age, balance FROM Users WHERE age != ?', (60,))
-age_users = cursor.fetchall()
-for user in age_users:
-    print(f'Имя:{user[0]} | Почта: {user[1]} | Возраст: {user[2]} | Баланс: {user[3]}')
+#cursor.execute('SELECT username, email, age, balance FROM Users WHERE age != ?', (60,))
+#age_users = cursor.fetchall()
+#for user in age_users:
+#    print(f'Имя:{user[0]} | Почта: {user[1]} | Возраст: {user[2]} | Баланс: {user[3]}')
+
+cursor.execute('DELETE FROM Users WHERE id = ?', (6,))
+
+cursor.execute('SELECT COUNT(*) FROM Users')
+total_users = cursor.fetchone()[0]
+cursor.execute('SELECT SUM(balance) FROM Users')
+all_balances = cursor.fetchone()[0]
+print(all_balances / total_users)
 
 connection.commit()
 connection.close()
